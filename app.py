@@ -218,6 +218,21 @@ def initdb_command():
         db.session.commit()
         print('Created dummy user with id = 1')
     print('Initialized the database.')
+    
+    
+@app.route('/initdb')
+def initdb_route():
+    """Temporary route to initialize database tables."""
+    try:
+        db.create_all()
+        if not User.query.first():
+            dummy = User()
+            db.session.add(dummy)
+            db.session.commit()
+        return "Database initialized successfully! Dummy user created."
+    except Exception as e:
+        return f"Error: {e}"
+    
 
 if __name__ == '__main__':
     app.run(debug=True)
