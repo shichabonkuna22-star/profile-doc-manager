@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+venv/
+env/
+ENV/
+
+# Flask / SQLite
+instance/
+*.db
+*.sqlite
+*.sqlite3
+
+# Uploads (if you don't want to commit user files)
+uploads/
+!uploads/.gitkeep   # optional: keep empty folder
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db

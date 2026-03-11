@@ -1,0 +1,213 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    .page-title {
+        color: #004080;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+        border-left: 6px solid #0061a8;
+        padding-left: 1rem;
+        animation: slideRight 0.6s;
+    }
+    .profile-section {
+        background: white;
+        border-radius: 2rem;
+        padding: 2rem;
+        box-shadow: 0 20px 40px rgba(0, 64, 128, 0.1);
+        margin-bottom: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        flex-wrap: wrap;
+        animation: slideUp 0.8s;
+        transition: box-shadow 0.3s ease;
+    }
+    .profile-section:hover {
+        box-shadow: 0 25px 50px rgba(0,97,168,0.2);
+    }
+    .profile-avatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid #0061a8;
+        box-shadow: 0 8px 16px rgba(0,97,168,0.2);
+        transition: transform 0.4s ease;
+    }
+    .profile-avatar:hover {
+        transform: scale(1.05) rotate(2deg);
+    }
+    .profile-info h3 {
+        color: #004080;
+        margin-bottom: 0.5rem;
+    }
+    .btn-profile {
+        background: linear-gradient(135deg, #0061a8, #004080);
+        border: none;
+        color: white;
+        padding: 0.6rem 1.8rem;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+    }
+    .btn-profile:hover {
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 8px 16px rgba(0,97,168,0.3);
+        color: white;
+    }
+    .btn-upload {
+        background: linear-gradient(135deg, #28a745, #1e7e34);
+        border: none;
+        color: white;
+        padding: 0.6rem 1.8rem;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(40, 167, 69, 0.2);
+        margin-bottom: 1.5rem;
+        animation: slideLeft 0.6s;
+    }
+    .btn-upload:hover {
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 8px 20px rgba(40, 167, 69, 0.3);
+        background: linear-gradient(135deg, #1e7e34, #145523);
+    }
+    .table-custom {
+        background: white;
+        border-radius: 1.5rem;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        border: none;
+        animation: fadeIn 1s;
+    }
+    .table-custom thead th {
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        color: #004080;
+        font-weight: 600;
+        border-bottom: 2px solid #0061a8;
+        padding: 1rem;
+    }
+    .table-custom tbody tr {
+        transition: all 0.3s ease;
+    }
+    .table-custom tbody tr:hover {
+        background-color: #f0f8ff;
+        transform: scale(1.01) translateY(-2px);
+        box-shadow: 0 8px 16px rgba(0,97,168,0.1);
+    }
+    .table-custom td {
+        padding: 1rem;
+        vertical-align: middle;
+        border-bottom: 1px solid #e9ecef;
+    }
+    .badge-type {
+        background: #e7f1ff;
+        color: #004080;
+        padding: 0.4rem 0.8rem;
+        border-radius: 30px;
+        font-weight: 500;
+        font-size: 0.85rem;
+        transition: all 0.2s ease;
+    }
+    .badge-type:hover {
+        background: #0061a8;
+        color: white;
+    }
+    .btn-action {
+        border-radius: 30px;
+        padding: 0.3rem 1rem;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        margin-right: 0.3rem;
+        border: none;
+    }
+    .btn-download {
+        background: #0061a8;
+        color: white;
+    }
+    .btn-download:hover {
+        background: #004080;
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 0 6px 12px rgba(0,97,168,0.3);
+    }
+    .btn-preview {
+        background: #6c757d;
+        color: white;
+    }
+    .btn-preview:hover {
+        background: #5a6268;
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 0 6px 12px rgba(108,117,125,0.3);
+    }
+    .empty-state {
+        text-align: center;
+        padding: 3rem;
+        background: white;
+        border-radius: 1.5rem;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        animation: fadeIn 1s;
+    }
+    .empty-state p {
+        color: #6c757d;
+        font-size: 1.2rem;
+    }
+</style>
+
+<div class="profile-section">
+    {% if user.profile_image %}
+        <img src="{{ url_for('uploaded_profile', filename=user.profile_image) }}" class="profile-avatar" alt="Profile">
+    {% else %}
+        <img src="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y" class="profile-avatar" alt="Default avatar">
+    {% endif %}
+    <div class="profile-info">
+        <h3>User #{{ user.id }}</h3>
+        <a href="{{ url_for('upload_profile_image', user_id=user.id) }}" class="btn-profile">✏️ Change Profile Picture</a>
+    </div>
+</div>
+
+<h2 class="page-title">📄 Your Documents</h2>
+<a href="{{ url_for('upload_document', user_id=user.id) }}" class="btn btn-upload">⬆️ Upload New Document</a>
+
+{% if docs %}
+<div class="table-responsive">
+    <table class="table table-custom">
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Filename</th>
+                <th>Upload Date (SAST)</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for doc in docs %}
+            <tr class="animate slide-up" style="animation-delay: {{ loop.index * 0.1 }}s;">
+                <td><span class="badge-type">
+                    {% if doc.file_type == 'cv' %}📄 CV
+                    {% elif doc.file_type == 'transcript' %}📊 Transcript
+                    {% elif doc.file_type == 'qualification' %}🎓 Qualification
+                    {% else %}📁 Other
+                    {% endif %}
+                </span></td>
+                <td>{{ doc.filename }}</td>
+                <td>{{ doc.upload_date | sast }}</td>  <!-- using the SAST filter -->
+                <td>
+                    <a href="{{ url_for('download_document', doc_id=doc.id) }}" class="btn btn-action btn-download">⬇️ Download</a>
+                    <a href="{{ url_for('preview_document', doc_id=doc.id) }}" target="_blank" class="btn btn-action btn-preview">🔍 Preview</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="empty-state">
+    <div style="font-size: 4rem;">📭</div>
+    <p>No documents uploaded yet.</p>
+    <a href="{{ url_for('upload_document', user_id=user.id) }}" class="btn btn-upload mt-3">Upload Your First Document</a>
+</div>
+{% endif %}
+{% endblock %}

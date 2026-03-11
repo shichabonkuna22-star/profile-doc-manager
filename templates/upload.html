@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    .upload-card {
+        background: white;
+        border-radius: 2rem;
+        padding: 2.5rem;
+        box-shadow: 0 20px 40px rgba(0, 64, 128, 0.1);
+        max-width: 700px;
+        margin: 2rem auto;
+        border: 1px solid rgba(0, 97, 168, 0.1);
+        animation: slideUp 0.8s;
+    }
+    .upload-title {
+        color: #004080;
+        font-weight: 700;
+        margin-bottom: 2rem;
+        text-align: center;
+        font-size: 2rem;
+        animation: slideLeft 0.6s;
+    }
+    .form-label {
+        color: #2c3e50;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+    .form-select, .form-control {
+        border-radius: 50px;
+        border: 1px solid #ced4da;
+        padding: 0.75rem 1.5rem;
+        transition: all 0.3s ease;
+        background-color: #f8f9fa;
+    }
+    .form-select:focus, .form-control:focus {
+        border-color: #0061a8;
+        box-shadow: 0 0 0 0.2rem rgba(0, 97, 168, 0.25);
+        background-color: white;
+        transform: scale(1.01);
+    }
+    .btn-upload-submit {
+        background: linear-gradient(135deg, #0061a8, #004080);
+        border: none;
+        color: white;
+        padding: 0.8rem 2rem;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 97, 168, 0.3);
+        width: 100%;
+        margin-top: 1rem;
+    }
+    .btn-upload-submit:hover {
+        transform: translateY(-4px) scale(1.01);
+        box-shadow: 0 12px 24px rgba(0, 97, 168, 0.4);
+        background: linear-gradient(135deg, #004080, #002856);
+    }
+    .btn-cancel {
+        background: #6c757d;
+        border: none;
+        color: white;
+        padding: 0.8rem 2rem;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        width: 100%;
+        margin-top: 1rem;
+        text-align: center;
+        display: block;
+        text-decoration: none;
+    }
+    .btn-cancel:hover {
+        background: #5a6268;
+        transform: translateY(-3px) scale(1.01);
+        text-decoration: none;
+        color: white;
+        box-shadow: 0 8px 16px rgba(108,117,125,0.3);
+    }
+    .file-hint {
+        font-size: 0.9rem;
+        color: #6c757d;
+        margin-top: 0.5rem;
+        text-align: center;
+    }
+</style>
+
+<div class="upload-card">
+    <h2 class="upload-title">⬆️ Upload Document</h2>
+    <p class="text-muted text-center mb-4">for User #{{ user_id }}</p>
+    <form method="POST" enctype="multipart/form-data">
+        <div class="mb-4">
+            <label for="doc_type" class="form-label">Document Type</label>
+            <select class="form-select" name="doc_type" id="doc_type" required>
+                <option value="cv">📄 CV (Compulsory)</option>
+                <option value="transcript">📊 Academic Transcript</option>
+                <option value="qualification">🎓 Qualification</option>
+                <option value="other">📁 Other</option>
+            </select>
+        </div>
+        <div class="mb-4">
+            <label for="file" class="form-label">Choose file</label>
+            <input class="form-control" type="file" name="file" id="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.txt" required>
+            <div class="file-hint">Allowed: PDF, DOC, DOCX, JPG, PNG, TXT (max 16MB)</div>
+        </div>
+        <button type="submit" class="btn btn-upload-submit">⬆️ Upload</button>
+        <a href="{{ url_for('user_documents', user_id=user_id) }}" class="btn-cancel">✖️ Cancel</a>
+    </form>
+</div>
+{% endblock %}

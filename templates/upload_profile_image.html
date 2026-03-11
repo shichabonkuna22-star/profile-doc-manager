@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    .upload-card {
+        background: white;
+        border-radius: 2rem;
+        padding: 2.5rem;
+        box-shadow: 0 20px 40px rgba(0, 64, 128, 0.1);
+        max-width: 600px;
+        margin: 2rem auto;
+        border: 1px solid rgba(0, 97, 168, 0.1);
+        animation: slideUp 0.8s;
+    }
+    .upload-title {
+        color: #004080;
+        font-weight: 700;
+        margin-bottom: 2rem;
+        text-align: center;
+        font-size: 2rem;
+        animation: slideRight 0.6s;
+    }
+    .current-image {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    .current-image img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid #0061a8;
+        box-shadow: 0 8px 16px rgba(0,97,168,0.2);
+        transition: transform 0.4s ease;
+    }
+    .current-image img:hover {
+        transform: scale(1.05) rotate(2deg);
+    }
+    .form-label {
+        color: #2c3e50;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+    .form-control {
+        border-radius: 50px;
+        border: 1px solid #ced4da;
+        padding: 0.75rem 1.5rem;
+        transition: all 0.3s ease;
+        background-color: #f8f9fa;
+    }
+    .form-control:focus {
+        border-color: #0061a8;
+        box-shadow: 0 0 0 0.2rem rgba(0, 97, 168, 0.25);
+        background-color: white;
+        transform: scale(1.01);
+    }
+    .btn-upload-submit {
+        background: linear-gradient(135deg, #0061a8, #004080);
+        border: none;
+        color: white;
+        padding: 0.8rem 2rem;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 97, 168, 0.3);
+        width: 100%;
+        margin-top: 1rem;
+    }
+    .btn-upload-submit:hover {
+        transform: translateY(-4px) scale(1.01);
+        box-shadow: 0 12px 24px rgba(0, 97, 168, 0.4);
+        background: linear-gradient(135deg, #004080, #002856);
+    }
+    .btn-cancel {
+        background: #6c757d;
+        border: none;
+        color: white;
+        padding: 0.8rem 2rem;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        width: 100%;
+        margin-top: 1rem;
+        text-align: center;
+        display: block;
+        text-decoration: none;
+    }
+    .btn-cancel:hover {
+        background: #5a6268;
+        transform: translateY(-3px) scale(1.01);
+        text-decoration: none;
+        color: white;
+        box-shadow: 0 8px 16px rgba(108,117,125,0.3);
+    }
+    .file-hint {
+        font-size: 0.9rem;
+        color: #6c757d;
+        margin-top: 0.5rem;
+        text-align: center;
+    }
+</style>
+
+<div class="upload-card">
+    <h2 class="upload-title">✏️ Profile Picture</h2>
+    <div class="current-image">
+        {% if user.profile_image %}
+            <img src="{{ url_for('uploaded_profile', filename=user.profile_image) }}" alt="Current">
+        {% else %}
+            <img src="https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y" alt="Default">
+        {% endif %}
+        <p class="mt-2 text-muted">Current image</p>
+    </div>
+    <form method="POST" enctype="multipart/form-data">
+        <div class="mb-4">
+            <label for="profile_image" class="form-label">Choose new image</label>
+            <input class="form-control" type="file" name="profile_image" id="profile_image" accept=".jpg,.jpeg,.png,.gif" required>
+            <div class="file-hint">Allowed: JPG, JPEG, PNG, GIF (max 16MB)</div>
+        </div>
+        <button type="submit" class="btn btn-upload-submit">⬆️ Upload</button>
+        <a href="{{ url_for('user_documents', user_id=user.id) }}" class="btn-cancel">✖️ Cancel</a>
+    </form>
+</div>
+{% endblock %}
